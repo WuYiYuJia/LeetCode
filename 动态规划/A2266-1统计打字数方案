@@ -1,0 +1,42 @@
+//遍历字符串获取最长相同字子串
+//对于非'7'或'9'
+//f[i]= f[i-1]+f[i-2]+f[i-3]
+//对于'7'或'9'
+//f[i]=f[i-1]+f[i-2]+f[i-3]+f[i-4]
+class Solution {
+public:
+    const int MOD = 1'000'000'007;
+    long long dfs(int n, int index = 3) {
+        long long res = 0; // 重置 res
+        if (n <= 1) return 1;
+        for (int i = index; i > 0; i--) {
+            if (n >= i) {
+                if(index==3)
+                    res += dfs(n - i);
+                else{
+                    res+=dfs(n-i,4);
+                }
+                res%=MOD;
+            }
+        }
+        return res%MOD;
+    }
+    int countTexts(string pressedKeys) {
+        long long ans = 1;
+        int cnt=0;
+        if (pressedKeys.length() <= 1) return 1;
+        for (int i = 0; i < pressedKeys.length(); i++) {
+            cnt++;
+            if (pressedKeys[i] != pressedKeys[i + 1]||i==pressedKeys.length()-1) {
+                if (pressedKeys[i] == '7' || pressedKeys[i] == '9') {
+                    ans *= dfs(cnt, 4);
+                } else {
+                    ans *= dfs(cnt);
+                }
+                cnt=0;
+            }
+            
+        }
+        return ans;
+    }
+};
