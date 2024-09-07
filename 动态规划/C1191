@@ -1,0 +1,33 @@
+//单个字串最优解
+//第一个字串最大后缀 最后一个最大前缀 +(中间字符串(为负数时+0===及最优解为前两个串的最优解))
+
+
+
+class Solution {
+public:
+    const int MOD = 1'000'000'007;
+    int kConcatenationMaxSum(vector<int>& arr, int k) {
+        vector<long long> s(arr.size(), 0); 
+        long long sum = 0;
+        long long minSum = 0;
+        long long maxSum = 0;
+        long long pre_value = 0;
+        long long cur_value = 0;
+        long long Max_value = 0;
+        for (int i : arr) {
+            sum += i;
+            s.push_back(sum);
+            minSum = min(minSum, sum);
+            maxSum = max(maxSum, sum);
+            cur_value = max(pre_value, 0LL) + i;
+            Max_value = max(Max_value, cur_value);
+            pre_value = cur_value;
+        }
+        Max_value %= MOD;
+        if (k <= 1) return Max_value;
+
+        // 使用 long long 避免溢出
+        long long result = max(Max_value, (long long)s.back() - minSum + maxSum + max((long long)s.back() * (k - 2), 0LL)) % MOD;
+        return result;
+    }
+};  
