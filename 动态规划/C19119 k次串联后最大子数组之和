@@ -1,0 +1,51 @@
+给定一个整数数组 arr 和一个整数 k ，通过重复 k 次来修改数组。
+
+例如，如果 arr = [1, 2] ， k = 3 ，那么修改后的数组将是 [1, 2, 1, 2, 1, 2] 。
+
+返回修改后的数组中的最大的子数组之和。注意，子数组长度可以是 0，在这种情况下它的总和也是 0。
+
+由于 结果可能会很大，需要返回的 109 + 7 的 模 。
+
+ 
+
+示例 1：
+
+输入：arr = [1,2], k = 3
+输出：9
+示例 2：
+
+输入：arr = [1,-2,1], k = 5
+输出：2
+示例 3：
+
+输入：arr = [-1,-2], k = 7
+输出：0
+
+问题:
+数组进行扩充时发生了溢出的问题
+解决:
+分类讨论:三种情况
+
+
+
+class Solution {
+public:
+    const int MOD = 1'000'000'007;
+    int kConcatenationMaxSum(vector<int>& arr, int k) {
+        if(arr.size()==0)return 0;
+        long long f_max=0;
+        long long ans=0;
+        int n = arr.size();
+        arr.resize(n*k);
+        for(int i=0;i<arr.size();i++){
+            arr[i]=arr[i%n];
+        }
+        for(int i:arr){
+            f_max%=MOD;
+            f_max=max(f_max,(long long)0)+i;
+            ans=max(ans,f_max);
+            ans%=MOD;
+        }
+        return ans;
+    }
+};
