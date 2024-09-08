@@ -1,0 +1,15 @@
+给定一个包含非负整数的 m x n 网格 grid ，请找出一条从左上角到右下角的路径，使得路径上的数字总和为最小。
+
+说明：每次只能向下或者向右移动一步。
+
+
+class Solution:
+    def minPathSum(self, grid: List[List[int]]) -> int:
+        @cache
+        def dfs(x:int, y:int) -> int:
+            if x < 0 or y < 0:
+                return float('inf')  # 无法到达的点返回无穷大
+            if x == 0 and y == 0:
+                return grid[0][0]
+            return min(dfs(x-1,y),dfs(x,y-1))+grid[x][y]
+        return dfs(len(grid) - 1, len(grid[0]) - 1)
