@@ -1,0 +1,24 @@
+一个机器人位于一个 m x n 网格的左上角 （起始点在下图中标记为 “Start” ）。
+
+机器人每次只能向下或者向右移动一步。机器人试图达到网格的右下角（在下图中标记为 “Finish” ）。
+
+问总共有多少条不同的路径？
+
+ 
+
+
+
+
+class Solution:
+    def uniquePaths(self, m: int, n: int) -> int:
+        @cache
+        def dfs(x: int, y: int) -> int:
+            # 检查是否超出边界
+            if x < 0 or y < 0:
+                return 0
+            # 检查是否到达起点
+            if x == 0 or y == 0:
+                return 1
+            return dfs(x - 1, y) + dfs(x, y - 1)
+
+        return dfs(m - 1, n - 1)
